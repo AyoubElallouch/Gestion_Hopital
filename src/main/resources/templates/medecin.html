@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Medecin</title>
+
+</head>
+<body>
+    <div layout:fragment="content1">
+        <div class="container mt-2">
+            <div class="card">
+                <div class="card-header">
+                    Listes des medecins
+                </div>
+                <div class="card-body">
+                    <form method="get" th:action="@{/user/index}">
+                        <label>Keyword </label>
+                        <input type="text" name="keyword" th:value="${keyword}">
+                        <button type="submit" class="btn btn-primary">Chercher</button>
+                    </form>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Specialite</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="m:${listmedecin}">
+                            <td th:text="${m.id}"></td>
+                            <td th:text="${m.nom}"></td>
+                            <td th:text="${m.specialite}"></td>
+                            <td sec:authorize="hasAuthority('ADMIN')">
+                                <a onclick="return confirm('Etes vous sure?')" class="btn btn-danger" th:href="@{/admin/deleteMedecin(id=${m.id}, keyword=${keyword}, page=${currentPage})}">
+                                    Delete
+                                </a>
+                            </td>
+                            <td sec:authorize="hasAuthority('ADMIN')">
+                                <a class="btn btn-success" th:href="@{/admin/editMedecin(id=${m.id}, keyword=${keyword}, page=${currentPage})}">
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <ul class="nav nav-pills">
+                        <li th:each="page,status:${pages}">
+                            <a th:class="${status.index==currentPage?'btn btn-primary ms-1':'btn btn-outline-primary ms-1'}"
+                               th:text="${status.index}"
+                               th:href="@{/user/index(page=${status.index}, keyword=${keyword})}"
+                            ></a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
+

@@ -1,7 +1,9 @@
 package com.elallouch.projet.web;
 
 
+import com.elallouch.projet.entities.Medecin;
 import com.elallouch.projet.entities.Patient;
+import com.elallouch.projet.repositories.MedecinRepository;
 import com.elallouch.projet.repositories.PatientRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import java.util.List;
 public class PatientController {
     private PatientRepository patientrepository;
 
+
     @GetMapping(path = "/user/index")
     public String patients(Model model,
                            @RequestParam(name = "page", defaultValue = "0") int page,
@@ -36,6 +39,9 @@ public class PatientController {
         model.addAttribute("keyword", keyword);
         return "patient";
     }
+
+
+
 
     @GetMapping("/admin/delete")
     public  String delete(Long id, String keyword, int page)
@@ -82,5 +88,9 @@ public class PatientController {
         model.addAttribute("keyword", keyword);
         return "editPatient";
     }
+
+
+
+
 }
 
